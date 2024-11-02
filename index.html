@@ -1,0 +1,95 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom SMS</title>
+    <style>
+        body {
+            background-color: #0f0f0f;
+            color: #00ff00;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .sms-container {
+            border: 2px solid #00ff00;
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 0 10px #00ff00;
+        }
+        .sms-container h2 {
+            margin: 0 0 15px;
+            font-size: 24px;
+        }
+        .sms-container input[type="text"], 
+        .sms-container textarea {
+            background-color: #1a1a1a;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+            font-size: 16px;
+            resize: none;
+        }
+        .sms-container button {
+            background-color: #00ff00;
+            color: #0f0f0f;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .sms-container button:hover {
+            background-color: #009900;
+        }
+    </style>
+</head>
+<body>
+
+<div class="sms-container">
+     <h1> SA Tech Team </b>
+    <h2>Send Custom SMS</h2>
+    <form method="POST" action="">
+        <input type="text" name="number" placeholder="Enter phone number" required>
+        <textarea name="message" placeholder="Type your message" required></textarea>
+        <input type="text" name="key" placeholder="Enter Key" required>
+        <button type="submit" name="send">Send SMS</button>
+    </form>
+
+    <?php
+    $uid = '672579a776135tmx';
+    $correctKey = 'tmx71'; // সঠিক key উল্লেখ করুন
+
+    if (isset($_POST['send'])) {
+        $number = $_POST['number'];
+        $message = str_replace(' ', '%20', $_POST['message']); // space handling
+        $key = $_POST['key'];
+
+        if ($key === $correctKey) {
+            // API URL
+            $apiUrl = "https://bdtools.top/smsapi.php?uid=$uid&number=$number&message=$message";
+
+            // API request
+            $response = file_get_contents($apiUrl);
+
+            // Display response
+            if ($response) {
+                echo "<p style='color: #00ff00; margin-top: 15px;'>$response</p>";
+            } else {
+                echo "<p style='color: red; margin-top: 15px;'>Failed to send SMS.</p>";
+            }
+        } else {
+            echo "<p style='color: red; margin-top: 15px;'>Invalid Key. Request not sent.</p>";
+        }
+    }
+    ?>
+</div>
+
+</body>
+</html>
